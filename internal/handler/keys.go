@@ -29,7 +29,6 @@ func NewHandler(s service.IKeyService) IKeysHandler {
 }
 
 func (kh *keysHandler) AuthStreamingKey(ctx echo.Context) error {
-	log.Default().Println("Running Auth...")
 	body := ctx.Request().Body
 	defer body.Close()
 
@@ -49,7 +48,7 @@ func (kh *keysHandler) AuthStreamingKey(ctx echo.Context) error {
 
 	log.Default().Println("User authenticated!")
 
-	newStreamURL := fmt.Sprintf("rmtp://127.0.0.1:1935/hls-live/%s", keys.Name)
+	newStreamURL := fmt.Sprintf("rtmp://127.0.0.1:1935/hls-live/%s", keys.Name)
 	log.Default().Println("Redirecting to:", newStreamURL)
 
 	return ctx.Redirect(http.StatusFound, newStreamURL)
@@ -68,7 +67,6 @@ func getStreamKey(s []byte) model.Keys {
 		value := splitPair[1]
 
 		if key == "name" {
-			// "livetopzera_1d4dbbd5-6b3f-4691-b4c6-9b62ad7e7f70"
 			allPassedValues := strings.Split(value, "_")
 			authValues.Name = allPassedValues[0]
 			authValues.Key = allPassedValues[1]
