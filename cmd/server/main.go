@@ -32,12 +32,12 @@ func main() {
 	keysRepository := repository.NewKeysReposiroy(db)
 	keysService := service.NewKeysService(keysRepository)
 	keysHandler := handler.NewHandler(keysService)
-	log.Default().Println("Routing...")
 
+	log.Default().Println("Routing...")
 	e := echo.New()
 	e.POST("/auth", keysHandler.AuthStreamingKey)
-	e.GET("/healthcheck", func(c echo.Context) error {
-		return c.String(http.StatusOK, "WORKING")
+	e.GET("/healthcheck", func(ctx echo.Context) error {
+		return ctx.String(http.StatusOK, "WORKING")
 	})
 
 	e.Logger.Fatal(e.Start(":8000"))
